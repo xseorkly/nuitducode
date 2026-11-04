@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Objectif Nuit du C0de — Préparation Scratch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0b24; --bg2:#121238; --card:#17174a; --card2:#1d1d5c; --line:#2b2b78;
+  --ink:#eef0ff; --mute:#a9addb; --dim:#7378b8;
+  --green:#3ee6a8; --yellow:#ffc542; --pink:#ff5d8f; --violet:#8f7bff; --cyan:#4fd8ff;
+  --r:18px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Outfit,system-ui,sans-serif;font-size:17px;line-height:1.55;
+  background-image:radial-gradient(1200px 600px at 85% -10%,#2a1f6e 0,transparent 60%),radial-gradient(900px 500px at -10% 30%,#10305c 0,transparent 60%);background-attachment:fixed}
+a{color:var(--cyan)}
+.px{font-family:"Press Start 2P",monospace;letter-spacing:.5px}
+.stars{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.55}
+header.top{position:sticky;top:0;z-index:20;backdrop-filter:blur(10px);background:rgba(11,11,36,.82);border-bottom:1px solid var(--line)}
+.nav{max-width:1240px;margin:0 auto;display:flex;align-items:center;gap:18px;padding:12px 22px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-weight:800;white-space:nowrap}
+.brand .logo{width:34px;height:34px}
+.brand span{font-size:15px}.brand b{color:var(--green)}
+.links{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+.links a{color:var(--mute);text-decoration:none;font-weight:600;font-size:15px;padding:8px 12px;border-radius:10px}
+.links a:hover{color:var(--ink);background:var(--card)}
+.links a.on{color:#0b0b24;background:var(--green)}
+.burger{display:none;margin-left:auto;background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:8px 12px;font:600 15px Outfit,system-ui,sans-serif;cursor:pointer}
+main{position:relative;z-index:1;max-width:1240px;margin:0 auto;padding:0 22px 80px}
+.view{display:none;animation:fade .35s ease}.view.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+h1,h2,h3{line-height:1.15;margin:0 0 .5em}
+h1{font-size:clamp(34px,5vw,60px);font-weight:800;letter-spacing:-1px}
+h2{font-size:clamp(26px,3.2vw,38px);font-weight:800;letter-spacing:-.5px}
+h3{font-size:21px;font-weight:700}
+.eyebrow{font-family:"Press Start 2P";font-size:11px;color:var(--green);letter-spacing:1px;margin-bottom:14px;display:block}
+.lead{font-size:20px;color:var(--mute);max-width:760px}
+section{padding:56px 0 8px}
+.grid{display:grid;gap:18px}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.card{background:linear-gradient(180deg,var(--card),var(--bg2));border:1px solid var(--line);border-radius:var(--r);padding:22px}
+.card p{color:var(--mute);margin:.3em 0}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 20px;border-radius:12px;font-weight:700;text-decoration:none;border:0;cursor:pointer;font-family:Outfit,system-ui,sans-serif;font-size:16px}
+.btn.p{background:var(--green);color:#082018}.btn.p:hover{filter:brightness(1.1)}
+.btn.s{background:var(--card2);color:var(--ink);border:1px solid var(--line)}.btn.s:hover{border-color:var(--green)}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.tag{display:inline-block;font-size:13px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--card2);color:var(--mute);border:1px solid var(--line)}
+/* hero */
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;padding:64px 0 30px}
+.hero h1 .z{color:var(--green)}
+.hero .moon{position:relative;aspect-ratio:1;max-width:440px;justify-self:center;width:100%}
+.counter{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:34px}
+.counter div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.counter b{display:block;font-size:30px;font-weight:800;color:var(--yellow)}
+.counter span{color:var(--mute);font-size:14px}
+/* path */
+.levels{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.lvl{border-radius:var(--r);padding:20px;border:1px solid var(--line);background:var(--card);position:relative;overflow:hidden}
+.lvl:before{content:"";position:absolute;inset:0 0 auto 0;height:5px;background:var(--c)}
+.lvl h3{color:var(--c)}
+.lvl .px{font-size:10px;color:var(--c)}
+.seqgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
+.seq{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;text-decoration:none;color:var(--ink);display:flex;flex-direction:column;transition:.2s}
+.seq:hover{transform:translateY(-4px);border-color:var(--c);box-shadow:0 14px 40px -18px var(--c)}
+.seq .th{height:170px;background:#fff center top/cover no-repeat;position:relative}
+.seq .th.scene{background-position:center}
+.seq .num{position:absolute;left:12px;top:12px;font-family:"Press Start 2P";font-size:11px;background:var(--bg);color:var(--c);padding:7px 9px;border-radius:8px;border:1px solid var(--c)}
+.seq .bd{padding:16px 18px 18px;display:flex;flex-direction:column;gap:6px;flex:1}
+.seq h3{font-size:19px;margin:0}
+.seq p{color:var(--mute);font-size:15px;margin:0;flex:1}
+.seq .lv{font-size:12px;font-weight:800;color:var(--c);text-transform:uppercase;letter-spacing:1px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}
+.filters button{font:700 14px Outfit,system-ui,sans-serif;padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--mute);cursor:pointer}
+.filters button.on{background:var(--ink);color:var(--bg)}
+/* timeline */
+.road{position:relative;margin-top:24px;display:flex;gap:0;overflow-x:auto;padding:10px 0 18px}
+.road .st{flex:1;min-width:92px;text-align:center;position:relative;text-decoration:none;color:var(--ink)}
+.road .st:before{content:"";position:absolute;top:22px;left:0;right:0;height:4px;background:var(--line)}
+.road .st i{position:relative;display:grid;place-items:center;width:48px;height:48px;margin:0 auto 8px;border-radius:50%;background:var(--bg);border:3px solid var(--c);font:10px "Press Start 2P";color:var(--c);font-style:normal}
+.road .st:hover i{background:var(--c);color:var(--bg)}
+.road .st small{display:block;color:var(--mute);font-size:12.5px;line-height:1.25;padding:0 4px}
+/* detail */
+.back{display:inline-block;margin:28px 0 0;color:var(--mute);text-decoration:none;font-weight:600}
+.back:hover{color:var(--ink)}
+.dhead{display:grid;grid-template-columns:1fr 330px;gap:36px;align-items:start;padding-top:24px}
+.dhead .pdf{background:#fff;border-radius:12px;padding:8px;box-shadow:0 20px 50px -20px #000;transform:rotate(1.5deg)}
+.dhead .pdf img{width:100%;display:block}
+.steps{counter-reset:s;display:grid;gap:12px;margin-top:10px}
+.stp{display:grid;grid-template-columns:44px 1fr;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.stp:before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:var(--c);color:var(--bg);font:12px "Press Start 2P"}
+.stp b{display:block;font-size:17px}.stp span{color:var(--mute)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:14px;font-weight:600;padding:6px 12px;border-radius:10px;background:rgba(62,230,168,.1);color:var(--green);border:1px solid rgba(62,230,168,.3)}
+.side{display:grid;gap:14px}
+.kv{display:flex;justify-content:space-between;gap:10px;border-bottom:1px dashed var(--line);padding:8px 0;font-size:15px}.kv span{color:var(--mute)}
+.scene-wide{border-radius:16px;overflow:hidden;border:1px solid var(--line);margin-top:22px}
+.scene-wide img{display:block;width:100%}
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:36px}
+/* packs */
+.pack{display:grid;grid-template-columns:1.2fr 1fr;gap:0;background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.pack .im{background:#0f1030;display:flex;align-items:center}.pack img{width:100%;height:auto;display:block}
+.pack .bd{padding:24px;display:flex;flex-direction:column;gap:10px}
+.pack .stats{display:flex;gap:8px;flex-wrap:wrap}
+.pack:nth-child(even){grid-template-columns:1fr 1.2fr}.pack:nth-child(even) .im{order:2}
+.mono{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--dim)}
+/* tutos */
+.tuto{display:grid;grid-template-columns:56px 1fr auto;gap:14px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 16px;text-decoration:none;color:var(--ink)}
+.tuto:hover{border-color:var(--pink)}
+.tuto .n{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--pink),var(--violet));display:grid;place-items:center;font:12px "Press Start 2P"}
+.tuto small{color:var(--mute)}
+.play{width:0;height:0;border-left:12px solid var(--pink);border-top:8px solid transparent;border-bottom:8px solid transparent}
+/* tables */
+table{width:100%;border-collapse:collapse;font-size:15.5px}
+th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--green);font-size:13px;text-transform:uppercase;letter-spacing:1px}
+td{color:var(--mute)}td b{color:var(--ink)}
+.do li,.dont li{margin:6px 0;color:var(--mute)}
+.do li::marker{content:"✓  ";color:var(--green)}
+.dont li::marker{content:"✕  ";color:var(--pink)}
+.crit{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.crit div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;text-align:center}
+.crit b{display:block;font:22px "Press Start 2P";color:var(--yellow);margin-bottom:10px}
+.cta{margin-top:56px;border-radius:24px;padding:40px;background:linear-gradient(120deg,#2a1f6e,#123a63);border:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+footer{position:relative;z-index:1;border-top:1px solid var(--line);color:var(--dim);font-size:14px;padding:26px 22px;text-align:center}
+/* slides */
+.deckwrap{margin-top:24px}
+.deck{position:relative;aspect-ratio:16/9;width:100%;border-radius:20px;overflow:hidden;border:1px solid var(--line);background:#0b0b24;container-type:inline-size}
+.deck:fullscreen{border-radius:0;border:0}
+.slide{position:absolute;inset:0;padding:5.5cqw 6cqw;display:none;flex-direction:column;justify-content:center;
+  background:radial-gradient(70cqw 40cqw at 90% 0,#2a1f6e 0,transparent 60%),radial-gradient(60cqw 40cqw at 0 100%,#10305c 0,transparent 60%),#0b0b24}
+.slide.on{display:flex;animation:fade .4s}
+.slide h2{font-size:4.3cqw;margin-bottom:2.2cqw}
+.slide h1{font-size:6.2cqw}
+.slide p,.slide li{font-size:2.05cqw;color:var(--mute);line-height:1.45}
+.slide .eb{font:1.05cqw "Press Start 2P";color:var(--green);margin-bottom:1.6cqw}
+.slide .cols{display:grid;grid-template-columns:1fr 1fr;gap:3cqw;align-items:center}
+.slide .c3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.8cqw}
+.slide .c4{display:grid;grid-template-columns:repeat(4,1fr);gap:1.6cqw}
+.slide .bx{background:var(--card);border:1px solid var(--line);border-radius:1.4cqw;padding:1.8cqw}
+.slide .bx h3{font-size:2.1cqw;margin-bottom:.6cqw}
+.slide .bx p{font-size:1.6cqw;margin:0}
+.slide .big{font-size:6cqw;font-weight:800;color:var(--yellow);line-height:1}
+.slide img{max-width:100%;border-radius:1.2cqw;display:block}
+.slide ul{margin:0;padding-left:2.4cqw}
+.slide .pg{position:absolute;right:2.4cqw;bottom:1.8cqw;font:1cqw "Press Start 2P";color:var(--dim)}
+.slide .mini{display:flex;gap:1cqw;flex-wrap:wrap}
+.slide .mini span{font-size:1.5cqw;font-weight:700;padding:.6cqw 1.1cqw;border-radius:.8cqw;border:1px solid var(--c);color:var(--c)}
+.deckbar{display:flex;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap}
+.deckbar .dots{display:flex;gap:6px;flex-wrap:wrap;flex:1}
+.deckbar .dots button{width:12px;height:12px;border-radius:50%;border:0;background:var(--line);cursor:pointer;padding:0}
+.deckbar .dots button.on{background:var(--green);width:28px;border-radius:6px}
+.deck .nb{position:absolute;top:50%;transform:translateY(-50%);width:4cqw;height:4cqw;min-width:36px;min-height:36px;border-radius:50%;border:1px solid var(--line);background:rgba(23,23,74,.7);color:var(--ink);cursor:pointer;font-size:2cqw;z-index:3;opacity:.5}
+.deck .nb:hover{opacity:1}.deck .prev{left:1.2cqw}.deck .next{right:1.2cqw}
+
+/* tabs + viewer */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:26px 0 18px;border-bottom:1px solid var(--line);padding-bottom:0}
+.tabs button{font:700 16px Outfit,system-ui,sans-serif;padding:12px 18px;border:0;border-bottom:3px solid transparent;background:none;color:var(--mute);cursor:pointer}
+.tabs button.on{color:var(--ink);border-color:var(--c,var(--green))}
+.tabs button .ic{margin-right:6px}
+.pane{display:none}.pane.on{display:block;animation:fade .3s}
+.mission{font-size:19px;line-height:1.5;background:linear-gradient(120deg,rgba(62,230,168,.12),rgba(79,216,255,.08));border:1px solid rgba(62,230,168,.35);border-radius:16px;padding:20px 22px;color:var(--ink)}
+.hint{display:block;margin-top:6px;font-size:14.5px;color:var(--yellow)}
+.hint:before{content:"💡 "}
+.check li{list-style:none;margin:8px 0;color:var(--mute)}
+.check li:before{content:"☐  ";color:var(--green);font-weight:800}
+.check{padding-left:4px}
+.ptable td:first-child{white-space:nowrap;color:var(--yellow);font-weight:700;width:110px}
+.viewer{background:#0f1030;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.vbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--card)}
+.vbar .sp{flex:1}
+.vbar button{font:700 15px Outfit,system-ui,sans-serif;padding:8px 14px;border-radius:10px;border:1px solid var(--line);background:var(--card2);color:var(--ink);cursor:pointer}
+.vbar button:disabled{opacity:.35;cursor:default}
+.vpage{padding:18px;display:flex;justify-content:center;background:#2a2c55}
+.vpage img{max-width:100%;max-height:none;box-shadow:0 10px 40px -10px #000;background:#fff;display:block}
+.vthumbs{display:flex;gap:8px;padding:10px 14px;overflow-x:auto;border-top:1px solid var(--line)}
+.vthumbs img{height:84px;border-radius:4px;border:2px solid transparent;cursor:pointer;background:#fff;opacity:.6}
+.vthumbs img.on{border-color:var(--green);opacity:1}
+.dlrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.btn.dl{background:var(--yellow);color:#231a00}
+.btn.dl:hover{filter:brightness(1.08)}
+.btn[disabled]{opacity:.5;pointer-events:none}
+.missing{border:1px dashed var(--line);border-radius:14px;padding:16px;color:var(--mute);font-size:15px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--card2);border:1px solid var(--line);color:var(--ink);padding:12px 18px;border-radius:12px;z-index:50;font-weight:600;display:none;max-width:90vw}
+.res td .btn{padding:8px 12px;font-size:14px}
+
+@media (max-width:980px){
+  .hero,.dhead{grid-template-columns:1fr}.dhead .pdf{max-width:300px}
+  .g3,.g4,.levels,.crit,.counter{grid-template-columns:1fr 1fr}
+  .pack,.pack:nth-child(even){grid-template-columns:1fr}.pack:nth-child(even) .im{order:0}
+  .links{display:none;position:absolute;top:100%;left:0;right:0;background:var(--bg);flex-direction:column;padding:10px 22px;border-bottom:1px solid var(--line)}
+  .links.open{display:flex}.burger{display:block}
+}
+@media (max-width:620px){.g2,.g3,.g4,.levels,.crit,.counter{grid-template-columns:1fr}body{font-size:16px}}
+</style>
+</head>
+<body>
+<canvas class="stars" id="stars"></canvas>
+<header class="top">
+  <nav class="nav">
+    <a class="brand" href="#accueil">
+      <svg class="logo" viewBox="0 0 16 16" shape-rendering="crispEdges"><rect width="16" height="16" rx="3" fill="#17174a"/><path fill="#3ee6a8" d="M4 3h2v2H4zM10 3h2v2h-2zM3 5h10v2H3zM2 7h3v2H2zM7 7h2v2H7zM11 7h3v2h-3zM2 9h12v2H2zM3 11h2v2H3zM11 11h2v2h-2z"/></svg>
+      <span>Objectif <b>Nuit du C0de</b></span>
+    </a>
+    <button class="burger" id="burger">Menu</button>
+    <div class="links" id="links">
+      <a href="#accueil">Accueil</a>
+      <a href="#la-nuit-du-code">La Nuit du Code</a>
+      <a href="#regles">Règles</a>
+      <a href="#parcours">Séquences</a>
+      <a href="#game-packs">Game packs</a>
+      <a href="#tutos">Tutos</a>
+      <a href="#ressources">Ressources</a>
+      <a href="#organiser">Organiser</a>
+      <a href="#diaporama">Diaporama</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+<!-- ============ ACCUEIL ============ -->
+<div class="view" id="v-accueil">
+  <div class="hero">
+    <div>
+      <span class="eyebrow">AEFE · PRÉPARATION SCRATCH</span>
+      <h1>Objectif<br><span class="z">Nuit du C0de</span></h1>
+      <p class="lead">Six heures, une équipe de 2 ou 3, un univers de jeu imposé… et un jeu vidéo à créer de A à Z. Ce site rassemble la présentation du concours et un parcours complet d'ateliers pour y préparer vos élèves, de la toute première séance au game pack.</p>
+      <div class="row" style="margin-top:26px">
+        <a class="btn p" href="#parcours">Voir le parcours des séquences</a>
+        <a class="btn s" href="#diaporama">▶ Lancer le diaporama</a>
+      </div>
+      <div class="counter">
+        <div><b>10</b><span>séquences #0 → #9</span></div>
+        <div><b>+5</b><span>passerelle & bonus</span></div>
+        <div><b>7</b><span>game packs Scratch</span></div>
+        <div><b>18</b><span>tutos vidéo</span></div>
+      </div>
+    </div>
+    <div class="moon">
+      <svg viewBox="0 0 400 400" width="100%">
+        <defs><radialGradient id="mg" cx=".38" cy=".35"><stop offset="0" stop-color="#fff6d8"/><stop offset=".7" stop-color="#ffd76a"/><stop offset="1" stop-color="#e8a93a"/></radialGradient>
+        <filter id="gl"><feGaussianBlur stdDeviation="14"/></filter></defs>
+        <circle cx="200" cy="190" r="150" fill="#ffc542" opacity=".25" filter="url(#gl)"/>
+        <circle cx="200" cy="190" r="132" fill="url(#mg)"/>
+        <circle cx="150" cy="150" r="20" fill="#e8b24a" opacity=".55"/><circle cx="250" cy="230" r="28" fill="#e8b24a" opacity=".45"/><circle cx="235" cy="130" r="10" fill="#e8b24a" opacity=".5"/>
+        <g font-family="JetBrains Mono" font-size="15" font-weight="700">
+          <rect x="24" y="300" width="180" height="40" rx="9" fill="#ffab19"/><text x="40" y="326" fill="#fff">quand ⚑ cliqué</text>
+          <rect x="44" y="342" width="200" height="36" rx="8" fill="#4c97ff"/><text x="58" y="366" fill="#fff">avancer de 10 pas</text>
+          <rect x="190" y="40" width="190" height="38" rx="9" fill="#ff5d8f"/><text x="204" y="65" fill="#fff">score ← score + 1</text>
+        </g>
+        <g fill="#3ee6a8" shape-rendering="crispEdges" transform="translate(290 280) scale(5)"><path d="M4 3h2v2H4zM10 3h2v2h-2zM3 5h10v2H3zM2 7h3v2H2zM7 7h2v2H7zM11 7h3v2h-3zM2 9h12v2H2zM3 11h2v2H3zM11 11h2v2h-2z"/></g>
+      </svg>
+    </div>
+  </div>
+
+  <section>
+    <span class="eyebrow">LE SITE EN BREF</span>
+    <div class="grid g4">
+      <a class="card" href="#la-nuit-du-code" style="text-decoration:none;color:inherit"><h3>🌙 La Nuit du Code</h3><p>Le concours officiel : principe, catégories Scratch et Python, calendrier 2026-2027, chiffres clés.</p></a>
+      <a class="card" href="#parcours" style="text-decoration:none;color:inherit"><h3>🧭 Le parcours de préparation</h3><p>Les séquences #0 à #9, la passerelle et les bonus, avec un côté élève et un côté prof.</p></a>
+      <a class="card" href="#game-packs" style="text-decoration:none;color:inherit"><h3>🎮 Les game packs</h3><p>7 univers Scratch analysés : lutins, décors, sons, et la fiche qui va avec.</p></a>
+      <a class="card" href="#regles" style="text-decoration:none;color:inherit"><h3>📜 Règles & évaluation</h3><p>Ce qui est permis, ce qui est interdit, et la grille du jury (4 critères notés sur 5).</p></a>
+      <a class="card" href="#ressources" style="text-decoration:none;color:inherit"><h3>⬇️ Ressources</h3><p>Toutes les fiches PDF et les game packs à lire et télécharger directement.</p></a>
+      <a class="card" href="#tutos" style="text-decoration:none;color:inherit"><h3>🎬 Les tutos</h3><p>18 épisodes vidéo reliés aux séquences : déplacements, clones, sauts, scrolling…</p></a>
+      <a class="card" href="#organiser" style="text-decoration:none;color:inherit"><h3>🗓️ Organiser l'événement</h3><p>Les 10 étapes, la feuille de route et la check-list du jour J.</p></a>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">LA PROGRESSION</span>
+    <h2>Du premier carré au jeu complet</h2>
+    <p class="lead">Chaque séquence ajoute une brique. Cliquez sur une étape pour ouvrir sa fiche détaillée.</p>
+    <div class="road" id="road"></div>
+  </section>
+
+  <div class="cta">
+    <div><h2 style="margin:0">1, 2, 3… c0dez !</h2><p style="color:var(--mute);margin:.3em 0 0">Cette compétition est avant tout une fête et une formidable occasion de travailler de nombreuses compétences de manière ludique.</p></div>
+    <a class="btn p" href="#parcours">Commencer par la séquence #0</a>
+  </div>
+</div>
+
+<!-- ============ LA NUIT DU CODE ============ -->
+<div class="view" id="v-la-nuit-du-code">
+  <section>
+    <span class="eyebrow">LE CONCOURS OFFICIEL</span>
+    <h1>La Nuit du Code, c'est quoi ?</h1>
+    <p class="lead">Un marathon de programmation éducatif et ludique : en équipes de 2 ou 3, les élèves imaginent, conçoivent et codent entièrement un jeu vidéo en 6 heures maximum (moins pour les plus jeunes), à partir d'un univers de jeu fourni.</p>
+    <div class="counter" style="max-width:900px">
+      <div><b>6 h</b><span>pour créer un jeu</span></div>
+      <div><b>2–3</b><span>élèves par équipe</span></div>
+      <div><b>609</b><span>établissements en 2026</span></div>
+      <div><b>15 000+</b><span>élèves en 2026</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="grid g2">
+      <div class="card"><h3>🎯 Le défi</h3><p>Scénario, gameplay, graphismes, musique : les équipes gèrent tout. La seule limite est leur imagination. Il n'est pas nécessaire de connaître Scratch ou Python à l'avance : quelques séances de préparation suffisent.</p></div>
+      <div class="card"><h3>🌗 Pas forcément la nuit !</h3><p>Matin, après-midi, soirée, en semaine ou le week-end : chaque établissement choisit sa date et son créneau entre mai et juin.</p></div>
+      <div class="card"><h3>💸 Budget</h3><p>De zéro à quelques dizaines d'euros. Quelques ordinateurs connectés, une ou plusieurs salles, des encadrants. Familles pour les boissons et le goûter ; pizzas, goodies et récompenses en option.</p></div>
+      <div class="card"><h3>🏆 Après l'épreuve</h3><p>Les jeux sont publiés et testés par d'autres classes. Chaque établissement peut proposer jusqu'à 2 jeux par catégorie à la sélection internationale ; un jury d'enseignants retient 8 jeux par catégorie.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">6 CATÉGORIES</span>
+    <h2>Deux langages, six catégories</h2>
+    <div class="grid g2">
+      <div class="card" style="border-color:#ffab19"><h3 style="color:#ffab19">🐱 Scratch</h3>
+        <table><tr><th>Catégorie</th><th>Durée</th></tr>
+        <tr><td><b>CM1 → 6e</b> (cycle 3)</td><td>réduite (≈ 4 h)</td></tr>
+        <tr><td><b>5e → 3e</b> (cycle 4)</td><td>6 h</td></tr>
+        <tr><td><b>Lycée</b></td><td>6 h</td></tr></table></div>
+      <div class="card" style="border-color:var(--cyan)"><h3 style="color:var(--cyan)">🐍 Python + Pyxel</h3>
+        <table><tr><th>Catégorie</th><th>Durée</th></tr>
+        <tr><td><b>NSI Première</b></td><td>6 h</td></tr>
+        <tr><td><b>NSI Terminale</b></td><td>6 h</td></tr>
+        <tr><td><b>Post-bac</b></td><td>6 h</td></tr></table></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">LES UNIVERS DE JEU</span>
+    <h2>Le game pack, cœur du concours</h2>
+    <div class="grid g2" style="align-items:center">
+      <div>
+        <p class="lead" style="font-size:18px">Chaque année, plusieurs univers de jeu sont fournis : ils contiennent tous les lutins, sons et arrière-plans nécessaires. Ils sont envoyés aux organisateurs environ <b style="color:var(--ink)">36 heures avant la date choisie</b> et les élèves les découvrent au lancement de l'épreuve. Ils en choisissent un, puis créent le jeu de leur choix en respectant les règles.</p>
+        <p class="lead" style="font-size:18px">Des univers d'entraînement sont disponibles à l'avance ; ceux de l'année restent confidentiels jusqu'à leur diffusion. Les game packs de ce site servent justement à s'entraîner dans ces conditions.</p>
+        <a class="btn s" href="#game-packs">Voir les 7 game packs d'entraînement</a>
+      </div>
+      <div class="scene-wide" style="margin:0"><img src="img/gp3-scene.jpg" alt="Aperçu du game pack Jeu de plateau"></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">CALENDRIER 2026 – 2027</span>
+    <h2>11ᵉ édition : les grandes dates</h2>
+    <table>
+      <tr><th>Période</th><th>Étape</th></tr>
+      <tr><td><b>Sept. 2026 → fin avril 2027</b></td><td>Inscriptions sur nuitducode.net (gratuites, sans limite de participants par établissement)</td></tr>
+      <tr><td><b>Janvier → mai 2027</b></td><td>Préparation, entraînements et sélections internes</td></tr>
+      <tr><td><b>2 → 28 mai 2027</b></td><td>Chaque établissement organise sa Nuit du Code (jusqu'au 30 juin hors sélection internationale)</td></tr>
+      <tr><td><b>Mi-juin 2027</b></td><td>Annonce de la sélection internationale : 8 jeux par catégorie retenus par un jury d'enseignants</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <span class="eyebrow">HISTOIRE</span>
+    <div class="grid g2">
+      <div class="card"><h3>Née dans le réseau AEFE</h3><p>Le projet a démarré en 2017 au Lycée français de Taipei, puis s'est déployé dans de nombreux établissements du réseau et au-delà. Il est aujourd'hui porté par Laurent Abbal et soutenu par l'AEIF, la DNE et le ministère de l'Éducation nationale, avec ses ressources hébergées sur la Forge des communs numériques éducatifs.</p></div>
+      <div class="card"><h3>Revoir les éditions</h3><p>Deux vidéos d'éditions passées, partagées sur le Padlet :</p>
+        <div class="row" style="margin-top:12px"><a class="btn s" href="https://youtu.be/4QJCBPgeynQ" target="_blank" rel="noopener">▶ Taipei 2019</a><a class="btn s" href="https://vimeo.com/547763411" target="_blank" rel="noopener">▶ San Francisco 2021</a><a class="btn s" href="https://podeduc.apps.education.fr/video/134288-nuit-du-code-2026/" target="_blank" rel="noopener">▶ Présentation 2026</a></div></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">LIENS OFFICIELS</span>
+    <div class="grid g3">
+      <a class="card" href="https://www.nuitducode.net" target="_blank" rel="noopener" style="text-decoration:none;color:inherit"><h3>Inscriptions</h3><p>nuitducode.net · console organisateur, dépôt et évaluation des jeux</p></a>
+      <a class="card" href="https://nuitducode.forge.apps.education.fr/docs/" target="_blank" rel="noopener" style="text-decoration:none;color:inherit"><h3>Documentation</h3><p>Organisation, règles, tutoriels Scratch et Pyxel, univers des années passées</p></a>
+      <a class="card" href="https://discussions.nuitducode.net" target="_blank" rel="noopener" style="text-decoration:none;color:inherit"><h3>Forum</h3><p>Questions et échanges entre organisateurs · contact@nuitducode.net</p></a>
+    </div>
+  </section>
+</div>
+
+<!-- ============ RÈGLES ============ -->
+<div class="view" id="v-regles">
+  <section>
+    <span class="eyebrow">RÈGLES & CONSEILS OFFICIELS</span>
+    <h1>Les règles du jeu</h1>
+    <p class="lead">À lire avec les élèves bien avant le jour J : le respect des consignes fait partie de l'évaluation.</p>
+  </section>
+  <section style="padding-top:20px">
+    <h2>La grille du jury</h2>
+    <p class="lead" style="font-size:17px">Chaque critère est noté sur 5. Un jeu qui ne fonctionne pas n'est pas évalué.</p>
+    <div class="crit">
+      <div><b>/5</b><h3>Jouabilité</h3><p style="color:var(--mute);margin:0">Le jeu fonctionne, on comprend quoi faire, on a envie d'y rejouer.</p></div>
+      <div><b>/5</b><h3>Richesse</h3><p style="color:var(--mute);margin:0">Richesse et complexité du jeu et du code.</p></div>
+      <div><b>/5</b><h3>Originalité</h3><p style="color:var(--mute);margin:0">Originalité et créativité du scénario et de l'usage de l'univers.</p></div>
+      <div><b>/5</b><h3>Consignes</h3><p style="color:var(--mute);margin:0">Respect des consignes, présentation et mode d'emploi.</p></div>
+    </div>
+  </section>
+  <section>
+    <div class="grid g2">
+      <div class="card" style="border-color:#ffab19"><h3 style="color:#ffab19">🐱 Scratch — l'univers</h3>
+        <ul class="do">
+          <li>Partir d'un des fichiers .sb3 proposés et n'utiliser que ses éléments.</li>
+          <li>Ne pas tout utiliser : faire des choix.</li>
+          <li>Dupliquer des lutins.</li>
+          <li>Légères retouches : symétrie, rotation, couleur, déformation, texte.</li>
+          <li>Créer des lutins « capteurs » (rectangle, cercle) ou des lutins « texte ».</li>
+        </ul>
+        <ul class="dont">
+          <li>Aucun lutin, décor ou son extérieur (bibliothèque Scratch, internet, ordinateur).</li>
+          <li>Ne jamais partager le jeu sur le site Scratch (sinon « Unshare » dans « Mes projets ») : les jeux partagés ne sont pas évalués.</li>
+        </ul></div>
+      <div class="card" style="border-color:var(--cyan)"><h3 style="color:var(--cyan)">🐍 Python / Pyxel — l'univers</h3>
+        <ul class="do">
+          <li>Choisir U1 à U4.pyxres, ou respecter un thème avec theme.pyxres (vide), ou n'utiliser que des formes géométriques.</li>
+          <li>Utiliser au moins 8 éléments différents de la banque d'images.</li>
+          <li>Écran de 128 × 128 ou 256 × 256 pixels.</li>
+          <li>Tout le code dans un seul fichier .py ; éditeurs de tilemaps, sons et musiques libres.</li>
+        </ul>
+        <ul class="dont">
+          <li>Modifier les images des banques fournies, renommer les .pyxres.</li>
+          <li>Importer des fichiers .py ou .pyxres créés avant la NDC.</li>
+        </ul></div>
+      <div class="card"><h3>🚫 Interdit pour tous</h3>
+        <ul class="dont">
+          <li>Regarder ou copier-coller des scripts d'autres projets ou d'internet.</li>
+          <li>Utiliser une IA ou chercher de l'aide en ligne ou sur l'ordinateur.</li>
+          <li>Utiliser des notes personnelles ou de la documentation papier (sauf la documentation fournie).</li>
+          <li>Diffuser les univers ou les jeux pendant la période de la NDC.</li>
+        </ul></div>
+      <div class="card"><h3>🤝 Autorisé</h3>
+        <ul class="do">
+          <li>Demander de l'aide aux enseignants (de bons conseils, pas de code complet).</li>
+          <li>Demander de l'aide aux autres équipes.</li>
+        </ul>
+        <h3 style="margin-top:18px">📦 À rendre au bout des 6 h</h3>
+        <ul class="do">
+          <li>Nom de l'équipe et catégorie.</li>
+          <li>Le fichier .sb3 (Fichier → Sauvegarder sur votre ordinateur) ou .py + .pyxres.</li>
+          <li>Une courte présentation et un mode d'emploi en français.</li>
+        </ul></div>
+    </div>
+  </section>
+  <section>
+    <span class="eyebrow">CONSEILS AUX ÉQUIPES</span>
+    <div class="grid g4">
+      <div class="card"><h3>💭 Penser avant de coder</h3><p>Passer en revue tous les lutins et costumes, imaginer le jeu, faire un croquis.</p></div>
+      <div class="card"><h3>🧱 Simple d'abord</h3><p>Une version simple mais jouable, puis difficulté, score, sons.</p></div>
+      <div class="card"><h3>⌨️ Les flèches</h3><p>Préférer les flèches aux lettres (QWERTY / AZERTY).</p></div>
+      <div class="card"><h3>💾 v1, v2, v3…</h3><p>Sauvegarder souvent des copies numérotées : Scratch ne sait pas annuler.</p></div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ PARCOURS ============ -->
+<div class="view" id="v-parcours">
+  <section>
+    <span class="eyebrow">OBJECTIF CODING · PARCOURS DE PRÉPARATION</span>
+    <h1>Les séquences d'ateliers</h1>
+    <p class="lead">Une quinzaine de fiches pour amener des élèves qui n'ont jamais codé jusqu'au jour J. Les séquences sont numérotées de <b style="color:var(--ink)">#0 à #9</b> et organisées en trois niveaux, complétées par une séquence passerelle et quatre bonus.</p>
+    <div class="levels" style="margin-top:28px" id="levels"></div>
+  </section>
+  <section style="padding-top:28px">
+    <div class="filters" id="filters"></div>
+    <div class="seqgrid" id="seqgrid"></div>
+  </section>
+  <section>
+    <div class="card row" style="justify-content:space-between">
+      <div><h3 style="margin:0">Les fiches PDF et les game packs</h3><p>Lis chaque fiche en ligne et télécharge les PDF et les game packs depuis la page Ressources.</p></div>
+      <div class="row"><a class="btn p" href="#ressources">Toutes les ressources</a><a class="btn s" id="padlet1" target="_blank" rel="noopener">Padlet d'origine</a></div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ DÉTAIL SÉQUENCE ============ -->
+<div class="view" id="v-detail"></div>
+
+<!-- ============ GAME PACKS ============ -->
+<div class="view" id="v-game-packs">
+  <section>
+    <span class="eyebrow">7 UNIVERS SCRATCH</span>
+    <h1>Les game packs</h1>
+    <p class="lead">Un game pack est l'univers du jeu : il contient tous les lutins, sons et arrière-plans nécessaires. Il n'est pas possible d'importer d'autres éléments. Il est souvent judicieux de ne pas tout utiliser : il faut faire des choix, réfléchir, être malin… et garder en tête qu'on veut s'amuser.</p>
+    <p class="mono" style="margin-top:14px">Aperçus générés à partir des fichiers .sb3 du Padlet : scène d'origine à gauche, lutins de jeu à droite.</p>
+  </section>
+  <div class="grid" id="packs" style="gap:24px"></div>
+  <section>
+    <span class="eyebrow">LA DÉMARCHE DE PROJET</span>
+    <h2>Ce que les fiches game pack demandent</h2>
+    <div class="grid g4">
+      <div class="card"><h3>1. Idées</h3><p>Croquis, carte mentale, schéma ou storyboard. Trier les lutins et décors.</p></div>
+      <div class="card"><h3>2. Planning</h3><p>Répartir les tâches dans l'équipe et les planifier.</p></div>
+      <div class="card"><h3>3. Nom & règle</h3><p>Nommer le jeu et rédiger sa règle (le futur mode d'emploi).</p></div>
+      <div class="card"><h3>4. Coder malin</h3><p>Sac à dos et blocs personnalisés pour mutualiser les scripts.</p></div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ TUTOS ============ -->
+<div class="view" id="v-tutos">
+  <section>
+    <span class="eyebrow">18 ÉPISODES · « CODER UN JEU AVEC SCRATCH »</span>
+    <h1>Les tutos vidéo</h1>
+    <p class="lead">Une série de tutoriels à utiliser de manière transversale pendant les séquences : chaque épisode indique la séquence ou le game pack où il sert. Idéal en autonomie, pour débloquer une équipe ou pour différencier.</p>
+  </section>
+  <div class="grid g2" id="tutolist"></div>
+  <section>
+    <div class="card row" style="justify-content:space-between">
+      <div><h3 style="margin:0">Et aussi…</h3><p>L'appli « Objectif Coding » et deux productions d'élèves en ligne.</p></div>
+      <div class="row"><a class="btn s" href="https://iplc8.glideapp.io/" target="_blank" rel="noopener">L'@ppli Objectif Coding</a><a class="btn s" href="https://scratch.mit.edu/projects/310928319/" target="_blank" rel="noopener">Production élève 1</a><a class="btn s" href="https://scratch.mit.edu/projects/310929680/" target="_blank" rel="noopener">Production élève 2</a></div>
+    </div>
+  </section>
+</div>
+
+
+<!-- ============ RESSOURCES ============ -->
+<div class="view" id="v-ressources">
+  <section>
+    <span class="eyebrow">TÉLÉCHARGEMENTS</span>
+    <h1>Toutes les ressources</h1>
+    <p class="lead">Les fiches PDF et les game packs, à lire en ligne ou à télécharger. Les game packs sont fournis en .zip : décompresse l'archive puis, dans Scratch, fais Fichier → Charger depuis votre ordinateur et choisis le fichier .sb3.</p>
+    <div class="dlrow"><button class="btn dl" data-dl="files/__COMPIL__" data-name="__COMPIL__">⬇ Compilation des séquences #0 à #7 (PDF, 18 pages)</button></div>
+  </section>
+  <section style="padding-top:26px">
+    <h2>Fiches</h2>
+    <table class="res" id="restable"></table>
+  </section>
+  <section>
+    <h2>Game packs</h2>
+    <table class="res" id="respacks"></table>
+  </section>
+</div>
+
+<!-- ============ ORGANISER ============ -->
+<div class="view" id="v-organiser">
+  <section>
+    <span class="eyebrow">CÔTÉ ÉQUIPE PÉDAGOGIQUE</span>
+    <h1>Organiser sa Nuit du Code</h1>
+    <p class="lead">Une organisation minimale suffit. Voici les étapes conseillées par la documentation officielle, et une proposition de calage avec le parcours de préparation.</p>
+  </section>
+  <section style="padding-top:20px">
+    <div class="grid g2 steps" id="orgsteps"></div>
+  </section>
+  <section>
+    <span class="eyebrow">FEUILLE DE ROUTE</span>
+    <h2>Qui fait quoi, et quand ?</h2>
+    <table>
+      <tr><th>Action</th><th>Période</th><th>Qui</th></tr>
+      <tr><td><b>Inscrire l'établissement, choisir la date, inscrire les équipes</b></td><td>Sept. 2026 → avril 2027</td><td>Organisateurs, direction</td></tr>
+      <tr><td><b>Communiquer</b> (affiches, mails, diaporama)</td><td>Sept. 2026 → avril 2027</td><td>Organisateurs, enseignants, direction</td></tr>
+      <tr><td><b>Former et sélectionner les élèves</b></td><td>Janvier → avril 2027</td><td>Organisateurs, enseignants</td></tr>
+      <tr><td><b>Prévoir boissons et goûter, choisir les salles</b></td><td>Avril → mai 2027</td><td>Organisateurs, direction, familles</td></tr>
+      <tr><td><b>Préparer le jour J, évaluer les jeux</b></td><td>Mai → juin 2027</td><td>Toutes les personnes impliquées</td></tr>
+      <tr><td><b>Cérémonie des diplômes</b></td><td>À la fin ou quelques jours après</td><td>Tout le monde</td></tr>
+    </table>
+  </section>
+  <section>
+    <span class="eyebrow">PROPOSITION DE CALAGE</span>
+    <h2>Le parcours sur l'année</h2>
+    <div class="grid g4">
+      <div class="lvl" style="--c:var(--green)"><span class="px">PÉRIODE 1–2</span><h3>Débutant</h3><p style="color:var(--mute)">#0, #1, passerelle, #2 : prise en main, blocs, boucles.</p></div>
+      <div class="lvl" style="--c:var(--yellow)"><span class="px">PÉRIODE 3</span><h3>Intermédiaire</h3><p style="color:var(--mute)">#3 à #7 : interactions, variables, clones, premiers jeux.</p></div>
+      <div class="lvl" style="--c:var(--pink)"><span class="px">PÉRIODE 4</span><h3>Expert</h3><p style="color:var(--mute)">#7 à #9 : game packs en conditions réelles (4 à 6 h).</p></div>
+      <div class="lvl" style="--c:var(--violet)"><span class="px">MAI–JUIN</span><h3>Jour J</h3><p style="color:var(--mute)">Découverte du game pack officiel, 6 h de création, dépôt, évaluation, remise des diplômes.</p></div>
+    </div>
+  </section>
+  <section>
+    <span class="eyebrow">CHECK-LIST DU JOUR J</span>
+    <div class="grid g3">
+      <div class="card"><h3>Avant</h3><ul class="do"><li>Salles, ordinateurs, casques, souris</li><li>Planning des encadrants (début, repas, fin)</li><li>Autorisations parentales</li><li>Game packs reçus ~36 h avant</li></ul></div>
+      <div class="card"><h3>À imprimer</h3><ul class="do"><li>Règles et conseils Scratch / Python</li><li>Documentation Pyxel</li><li>Carnets de bord des équipes</li><li>Diplômes</li></ul></div>
+      <div class="card"><h3>Après</h3><ul class="do"><li>Dépôt des jeux (console « Dépôt & évaluation »)</li><li>Évaluation croisée entre élèves</li><li>Jusqu'à 2 jeux par catégorie pour la sélection</li><li>Cérémonie et diplômes</li></ul></div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ DIAPORAMA ============ -->
+<div class="view" id="v-diaporama">
+  <section style="padding-top:40px">
+    <span class="eyebrow">PRÉSENTATION</span>
+    <h1 style="font-size:clamp(30px,4vw,46px)">Le diaporama</h1>
+    <p class="lead" style="font-size:18px">Pour présenter la Nuit du Code et le parcours aux élèves, aux collègues ou aux familles. Flèches ← → ou espace pour naviguer, F pour le plein écran.</p>
+    <div class="deckwrap">
+      <div class="deck" id="deck"></div>
+      <div class="deckbar">
+        <button class="btn s" id="dprev">←</button>
+        <div class="dots" id="dots"></div>
+        <button class="btn s" id="dnext">→</button>
+        <button class="btn p" id="dfs">⛶ Plein écran</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+</main>
+<div class="toast" id="toast"></div>
+<footer>
+  Objectif Nuit du C0de · Parcours de préparation Scratch — Fehmi Klabi, EF2D Technologie (AEFE) · Fiches « Objectif Coding » Zone Proche-Orient.<br>
+  Informations officielles : <a href="https://nuitducode.forge.apps.education.fr/" target="_blank" rel="noopener">nuitducode.forge.apps.education.fr</a> (CC BY-SA 4.0) · Contact : fehmi.klabi@aefe.fr
+</footer>
+
+<script src="data.js"></script>
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const L=LEVELS, S=SEQUENCES;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+$('#padlet1').href=PADLET;
+
+/* stars */
+(function(){const c=$('#stars'),g=c.getContext('2d');function d(){c.width=innerWidth;c.height=innerHeight;g.clearRect(0,0,c.width,c.height);let r=1;for(let i=0;i<160;i++){r=(r*9301+49297)%233280;const x=r/233280*c.width;r=(r*9301+49297)%233280;const y=r/233280*c.height;r=(r*9301+49297)%233280;const s=r/233280;g.fillStyle=s>.93?'#ffc542':'#ffffff';g.globalAlpha=.25+s*.6;g.fillRect(x,y,s>.85?2:1,s>.85?2:1)}}d();addEventListener('resize',d)})();
+
+/* road */
+$('#road').innerHTML=S.map(s=>`<a class="st" href="#${s.id}" style="--c:${L[s.level].color}"><i>${esc(s.level==='exp'?s.num.split(' · ')[1]:s.num.replace('Bonus ','B').replace(' bis','b'))}</i><small>${esc(s.title.replace('Cycle 3 – ',''))}</small></a>`).join('');
+
+/* levels + grid */
+const counts={};S.forEach(s=>counts[s.level]=(counts[s.level]||0)+1);
+$('#levels').innerHTML=Object.entries(L).map(([k,v])=>`<div class="lvl" style="--c:${v.color}"><span class="px">${counts[k]} FICHES</span><h3>${v.label}</h3><p style="color:var(--mute);margin:0">${v.desc}</p></div>`).join('');
+let filt='all';
+function drawGrid(){
+  $('#filters').innerHTML=[['all','Toutes']].concat(Object.entries(L).map(([k,v])=>[k,v.label])).map(([k,l])=>`<button data-f="${k}" class="${filt===k?'on':''}">${l}</button>`).join('');
+  $$('#filters button').forEach(b=>b.onclick=()=>{filt=b.dataset.f;drawGrid()});
+  $('#seqgrid').innerHTML=S.filter(s=>filt==='all'||s.level===filt).map(card).join('');
+}
+function card(s){const c=L[s.level].color;const im=s.scene||s.img;return `<a class="seq" href="#${s.id}" style="--c:${c}"><div class="th ${s.scene?'scene':''}" style="background-image:url('${im}')"><span class="num">${esc(s.num)}</span></div><div class="bd"><span class="lv">${L[s.level].label} · ${esc(s.duree)}</span><h3>${esc(s.title)}</h3><p>${esc(s.resume)}</p></div></a>`}
+drawGrid();
+
+/* downloads */
+let DLNS=null;
+(async()=>{try{if(window.claude&&claude.use){DLNS=await claude.use("downloads")}}catch(e){DLNS=null}})();
+function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(t._h);t._h=setTimeout(()=>t.style.display='none',4200)}
+async function dl(path,name){
+  try{
+    let blob;
+    if(!DLNS){ // hors claude.ai (GitHub Pages, GitLab Pages…) : lien de téléchargement direct
+      const direct=path.endsWith('.zip')?'files/'+SB3[path.split('/').pop()]:path;
+      const a=document.createElement('a'); a.href=direct; a.download=direct.split('/').pop(); document.body.appendChild(a); a.click(); a.remove(); return;
+    }
+    if(path.endsWith('.zip')){ // game packs : archive stockée en base64 dans packdata/*.json
+      const j=await fetch('packdata/'+path.split('/').pop().replace(/\.zip$/,'.json')).then(r=>{if(!r.ok) throw new Error('http');return r.json()});
+      const bin=atob(j.b64), u=new Uint8Array(bin.length); for(let k=0;k<bin.length;k++) u[k]=bin.charCodeAt(k);
+      blob=new Blob([u],{type:'application/zip'});
+    } else { const r=await fetch(path); if(!r.ok) throw new Error('http'); blob=await r.blob(); }
+    if(DLNS){ try{await DLNS.save({filename:name,data:blob}); toast('✅ '+name+' enregistré'); return}catch(e){ if(e&&e.code==='declined'){toast('Téléchargement annulé');return} if(e&&e.code==='rate_limited'){toast('Un téléchargement est déjà en cours, réessaie dans un instant');return} } }
+    // repli : ouvrir le fichier dans un nouvel onglet
+    window.open(path,'_blank','noopener') || (location.href=path);
+  }catch(e){ toast('Le fichier n\'a pas pu être chargé.'); }
+}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-dl]'); if(!b) return; e.preventDefault(); dl(b.dataset.dl,b.dataset.name)});
+const PUB=(n)=>n.replace(/_/g,' ').replace(/\.(pdf|zip)$/,'');
+
+/* detail */
+function viewerHTML(id){
+  const f=FILES[id];
+  if(!f) return `<div class="missing">📄 La fiche PDF complète de cette séquence sera ajoutée prochainement au site. En attendant, voici la première page, et la fiche reste disponible sur le <a href="${PADLET}" target="_blank" rel="noopener">Padlet</a>.<div style="margin-top:14px;background:#fff;border-radius:8px;padding:8px;max-width:420px"><img src="${S.find(x=>x.id===id).img}" style="width:100%;display:block" alt="Aperçu"></div></div>`;
+  return `<div class="viewer" id="viewer">
+    <div class="vbar"><button id="vprev">← Page précédente</button><b id="vnum">Page 1 / ${f.pages.length}</b><button id="vnext">Page suivante →</button><span class="sp"></span><button data-dl="files/${f.pdf}" data-name="${f.pdf}">⬇ PDF</button></div>
+    <div class="vpage"><img id="vimg" src="pages/${f.pages[0]}.jpg" alt="Page 1"></div>
+    ${f.pages.length>1?`<div class="vthumbs">${f.pages.map((p,i)=>`<img src="pages/${p}.jpg" data-p="${i}" class="${i?'':'on'}" alt="Page ${i+1}">`).join('')}</div>`:''}
+  </div>`;
+}
+function bindViewer(id){
+  const f=FILES[id]; if(!f) return; let pg=0;
+  const set=i=>{pg=Math.max(0,Math.min(f.pages.length-1,i));$('#vimg').src='pages/'+f.pages[pg]+'.jpg';$('#vnum').textContent='Page '+(pg+1)+' / '+f.pages.length;$('#vprev').disabled=pg===0;$('#vnext').disabled=pg===f.pages.length-1;$$('.vthumbs img').forEach((t,j)=>t.classList.toggle('on',j===pg))};
+  $('#vprev').onclick=()=>set(pg-1);$('#vnext').onclick=()=>set(pg+1);$$('.vthumbs img').forEach(t=>t.onclick=()=>set(+t.dataset.p));set(0);
+}
+let curTab='eleve';
+function detail(s){
+  const i=S.indexOf(s), c=L[s.level].color, prev=S[i-1], next=S[i+1];
+  const tutos=s.tutos.map(n=>TUTOS.find(t=>t[0]===n)).filter(Boolean);
+  const pk=s.pack&&PACKS.find(p=>p.id===s.pack);
+  const f=FILES[s.id], pz=s.pack&&PACKFILES[s.pack];
+  const E=s.eleve, P=s.prof;
+  const tutoHTML=tutos.length?`<div class="card" style="margin-top:18px"><h3>🎬 Tutos vidéo utiles</h3>${tutos.map(t=>`<a href="https://youtu.be/${t[2]}" target="_blank" rel="noopener" style="display:block;margin:8px 0;text-decoration:none">▶ Épisode ${t[0]} — ${esc(t[1])}</a>`).join('')}</div>`:'';
+  $('#v-detail').innerHTML=`
+  <a class="back" href="#parcours">← Toutes les séquences</a>
+  <div class="dhead" style="--c:${c}">
+    <div>
+      <span class="eyebrow" style="color:${c}">${esc(s.num)} · NIVEAU ${L[s.level].label.toUpperCase()} · ${esc(s.duree)}</span>
+      <h1 style="font-size:clamp(32px,4.4vw,52px)">${esc(s.title)}</h1>
+      <p class="lead">${esc(s.resume)}</p>
+      <div class="card" style="margin-top:16px"><b style="color:var(--ink)">📦 Dans la fiche :</b> <span style="color:var(--mute)">${esc(s.contenu)}</span></div>
+      <div class="dlrow">
+        ${f?`<button class="btn dl" data-dl="files/${f.pdf}" data-name="${f.pdf}">⬇ Télécharger la fiche PDF</button>`:`<a class="btn s" href="${PADLET}" target="_blank" rel="noopener">📄 Fiche PDF sur le Padlet</a>`}
+        ${pk?(pz?`<button class="btn p" data-dl="files/${pz}" data-name="${pz}">⬇ Télécharger le game pack (.sb3 dans un .zip)</button>`:`<a class="btn s" href="${PADLET}" target="_blank" rel="noopener">🎮 Game pack sur le Padlet</a>`):''}
+      </div>
+    </div>
+    <aside class="side">
+      <div class="pdf"><img src="${s.scene||s.img}" alt=""></div>
+      <div class="card">
+        <div class="kv"><span>Niveau</span><b style="color:${c}">${L[s.level].label}</b></div>
+        <div class="kv"><span>Durée</span><b>${esc(s.duree)}</b></div>
+        <div class="kv"><span>Outil</span><b>Scratch 3</b></div>
+        ${pk?`<div class="kv"><span>Game pack</span><b>${esc(pk.file)}</b></div>`:''}
+        <div class="chips" style="margin-top:12px">${s.notions.map(n=>`<span class="chip">${esc(n)}</span>`).join('')}</div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="tabs" style="--c:${c}">
+    <button data-t="eleve"><span class="ic">🧑‍🎓</span>Côté élève</button>
+    <button data-t="prof"><span class="ic">🧑‍🏫</span>Côté prof</button>
+    <button data-t="fiche"><span class="ic">📄</span>La fiche</button>
+    ${pk?'<button data-t="pack"><span class="ic">🎮</span>Le game pack</button>':''}
+  </div>
+
+  <div class="pane" id="p-eleve">
+    <div class="mission">🚀 <b>Ta mission :</b> ${esc(E.mission)}</div>
+    <div class="grid g2" style="margin-top:18px">
+      <div class="card"><h3>🧰 Ce qu'il te faut</h3><ul class="do">${E.besoin.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
+      <div class="card"><h3>✅ Je vérifie mon travail</h3><ul class="check">${E.verifie.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
+    </div>
+    <h2 style="margin-top:30px">Étape par étape</h2>
+    <div class="steps">${E.etapes.map(e=>`<div class="stp" style="--c:${c}"><div><b>${esc(e[0])}</b><span>${esc(e[1])}</span>${e[2]?`<span class="hint">${esc(e[2])}</span>`:''}</div></div>`).join('')}</div>
+    <div class="card" style="margin-top:18px;border-color:${c}"><h3>⭐ Pour aller plus loin</h3><p>${esc(E.plus)}</p></div>
+    ${tutoHTML}
+  </div>
+
+  <div class="pane" id="p-prof">
+    <div class="grid g2">
+      <div class="card"><h3>🎯 Objectifs</h3><ul class="do">${P.objectifs.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
+      <div class="card"><h3>📚 Compétences travaillées</h3><ul class="do">${P.competences.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
+      <div class="card"><h3>🧩 Prérequis</h3><p>${esc(P.prerequis)}</p></div>
+      <div class="card"><h3>🗂️ Organisation</h3><p>${esc(P.organisation)}</p></div>
+    </div>
+    <h2 style="margin-top:30px">Déroulé proposé</h2>
+    <table class="ptable">${P.deroule.map(d=>`<tr><td>${esc(d[0])}</td><td>${esc(d[1])}</td></tr>`).join('')}</table>
+    <div class="grid g3" style="margin-top:22px">
+      <div class="card"><h3>⚠️ Points de vigilance</h3><ul class="dont">${P.vigilance.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
+      <div class="card"><h3>🪜 Différenciation</h3><ul class="do">${P.differenciation.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
+      <div class="card"><h3>📝 Évaluation</h3><ul class="do">${P.evaluation.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
+    </div>
+    ${tutoHTML}
+  </div>
+
+  <div class="pane" id="p-fiche">${viewerHTML(s.id)}</div>
+
+  ${pk?`<div class="pane" id="p-pack">
+    <div class="scene-wide" style="margin-top:0"><img src="img/${pk.id}-sheet.jpg" alt=""></div>
+    <div class="card" style="margin-top:16px">
+      <h3>${esc(pk.name)} — ${esc(pk.file)}</h3>
+      <p>${esc(pk.desc)}</p>
+      <div class="pack"><div></div></div>
+      <div class="row" style="margin-top:10px"><span class="tag">${pk.lutins} lutins de jeu</span><span class="tag">${pk.decors} arrière-plan${pk.decors>1?'s':''}</span><span class="tag">${esc(pk.sons)}</span><span class="tag">${esc(pk.taille)}</span><span class="tag">${esc(pk.public)}</span></div>
+      <div class="dlrow">${pz?`<button class="btn p" data-dl="files/${pz}" data-name="${pz}">⬇ Télécharger le game pack</button>`:`<a class="btn s" href="${PADLET}" target="_blank" rel="noopener">🎮 Game pack sur le Padlet</a>`}</div>
+      <p style="margin-top:12px;font-size:15px">Comment l'ouvrir : décompresse le .zip → ouvre <a href="https://scratch.mit.edu/projects/editor/" target="_blank" rel="noopener">l'éditeur Scratch</a> → Fichier → « Charger depuis votre ordinateur » → choisis le fichier .sb3.</p>
+    </div>
+  </div>`:''}
+
+  <div class="pager">
+    ${prev?`<a class="btn s" href="#${prev.id}">← ${esc(prev.num)} ${esc(prev.title)}</a>`:'<span></span>'}
+    ${next?`<a class="btn s" href="#${next.id}">${esc(next.num)} ${esc(next.title)} →</a>`:'<span></span>'}
+  </div>`;
+  const setTab=t=>{ if(!$('#p-'+t)) t='eleve'; curTab=t; $$('.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===t)); $$('.pane').forEach(p=>p.classList.toggle('on',p.id==='p-'+t)); };
+  $$('.tabs button').forEach(b=>b.onclick=()=>setTab(b.dataset.t));
+  setTab(curTab); bindViewer(s.id);
+}
+
+/* ressources */
+$('#restable').innerHTML='<tr><th>Fiche</th><th>Niveau</th><th>PDF</th><th>Game pack</th></tr>'+S.map(s=>{const f=FILES[s.id],pz=s.pack&&PACKFILES[s.pack];return `<tr><td><a href="#${s.id}" style="text-decoration:none"><b>${esc(s.num)}</b> ${esc(s.title)}</a></td><td style="color:${L[s.level].color}">${L[s.level].label}</td><td>${f?`<button class="btn dl" data-dl="files/${f.pdf}" data-name="${f.pdf}">⬇ PDF (${f.pages.length} p.)</button>`:`<a class="btn s" href="${PADLET}" target="_blank" rel="noopener">Padlet</a>`}</td><td>${s.pack?(pz?`<button class="btn p" data-dl="files/${pz}" data-name="${pz}">⬇ .zip</button>`:`<a class="btn s" href="${PADLET}" target="_blank" rel="noopener">Padlet</a>`):'—'}</td></tr>`}).join('');
+$('#respacks').innerHTML='<tr><th>Game pack</th><th>Public</th><th>Contenu</th><th></th></tr>'+PACKS.map(p=>{const pz=PACKFILES[p.id];return `<tr><td><b>${esc(p.name)}</b><br><span class="mono">${esc(p.file)} · ${esc(p.taille)}</span></td><td>${esc(p.public)}</td><td>${p.lutins} lutins · ${p.decors} décors · ${esc(p.sons)}</td><td>${pz?`<button class="btn p" data-dl="files/${pz}" data-name="${pz}">⬇ Télécharger</button>`:`<a class="btn s" href="${PADLET}" target="_blank" rel="noopener">Padlet</a>`}</td></tr>`}).join('');
+document.querySelectorAll('[data-dl="files/__COMPIL__"]').forEach(b=>{b.dataset.dl='files/'+COMPIL;b.dataset.name=COMPIL});
+
+/* packs */
+$('#packs').innerHTML=PACKS.map(p=>{const s=S.find(x=>x.id===p.seq);const c=L[s.level].color;return `
+ <div class="pack" style="--c:${c}">
+  <div class="im"><img src="img/${p.id}-sheet.jpg" alt="${esc(p.name)}"></div>
+  <div class="bd">
+    <span class="lv" style="color:${c};font-weight:800;font-size:13px;letter-spacing:1px">${esc(s.num)} · ${esc(p.public)}</span>
+    <h2 style="margin:0">${esc(p.name)}</h2>
+    <p style="color:var(--mute);margin:0">${esc(p.desc)}</p>
+    <div class="stats"><span class="tag">${p.lutins} lutins de jeu</span><span class="tag">${p.decors} arrière-plan${p.decors>1?'s':''}</span><span class="tag">${esc(p.sons)}</span><span class="tag">${esc(p.taille)}</span></div>
+    <p class="mono">${esc(p.file)}</p>
+    <div class="row" style="margin-top:auto">${PACKFILES[p.id]?`<button class="btn p" data-dl="files/${PACKFILES[p.id]}" data-name="${PACKFILES[p.id]}">⬇ Télécharger le game pack</button>`:`<a class="btn s" href="${PADLET}" target="_blank" rel="noopener">Sur le Padlet</a>`}<a class="btn s" href="#${s.id}">Voir la fiche</a></div>
+  </div></div>`}).join('');
+
+/* tutos */
+$('#tutolist').innerHTML=TUTOS.map(t=>`<a class="tuto" href="https://youtu.be/${t[2]}" target="_blank" rel="noopener"><span class="n">${String(t[0]).padStart(2,'0')}</span><span><b>${esc(t[1])}</b><br><small>Utile pour : ${esc(t[3])}</small></span><span class="play"></span></a>`).join('');
+
+/* organiser */
+const ORG=[["Désigner les organisateurs","Une ou plusieurs personnes ; si plusieurs, un coordinateur qui inscrit l'établissement et fait le lien avec la direction."],["Inscrire l'établissement","Sur nuitducode.net : on obtient l'accès à l'espace de gestion (suivi, ressources, dépôt et évaluation des jeux)."],["Choisir la date","Avec la direction, et l'annoncer tôt, surtout un samedi, pour que les familles s'organisent."],["Fixer un budget","Il peut être quasi nul : diplôme imprimé et petite cérémonie suffisent. Pizzas, goodies, lots en option."],["Prévoir le matériel","Au moins un ordinateur par équipe (les élèves peuvent apporter le leur), en ligne ou hors ligne ; casques et souris conseillés."],["Réserver les salles","Assez grandes pour travailler à l'aise et circuler entre les équipes."],["Préparer les élèves","C'est le rôle du parcours « Objectif Coding » : séquences #0 → #9, en équipes de 2 ou 3."],["Autorisations parentales","Si l'événement a lieu hors temps scolaire : prévoir le temps des retours et relances."],["Repas et boissons","Des pauses sont indispensables ; la restauration scolaire ou les familles peuvent aider."],["Encadrants","Pas besoin de connaître Scratch ou Python. Roulement possible ; présence forte au début, au repas et à la fin."]];
+$('#orgsteps').innerHTML=ORG.map((o,i)=>`<div class="stp" style="--c:var(--cyan);counter-reset:none"><div><b>${o[0]}</b><span>${o[1]}</span></div></div>`).join('');
+
+/* ===== DIAPORAMA ===== */
+const lv=k=>`style="--c:${L[k].color}"`;
+const SL=[
+`<div class="cols"><div><div class="eb">AEFE · PRÉPARATION SCRATCH</div><h1>Objectif<br><span style="color:var(--green)">Nuit du C0de</span></h1><p>Créer un jeu vidéo en 6 heures, en équipe.<br>Présentation du concours et du parcours de préparation.</p></div><img src="img/gp3-scene.jpg" alt=""></div>`,
+`<div class="eb">LE CONCOURS</div><h2>La Nuit du Code, c'est quoi ?</h2><div class="cols"><ul><li>Un marathon de programmation <b style="color:var(--ink)">éducatif et ludique</b></li><li>Équipes de <b style="color:var(--ink)">2 ou 3 élèves</b></li><li><b style="color:var(--ink)">6 heures</b> pour imaginer, concevoir et coder un jeu complet</li><li>À partir d'un <b style="color:var(--ink)">univers de jeu imposé</b></li><li>Scénario, gameplay, graphismes, musique : la seule limite est l'imagination</li></ul><div class="c3" style="grid-template-columns:1fr 1fr"><div class="bx"><div class="big">609</div><p>établissements en 2026</p></div><div class="bx"><div class="big">15 k</div><p>élèves et plus</p></div><div class="bx"><div class="big">11ᵉ</div><p>édition en 2027</p></div><div class="bx"><div class="big">0 €</div><p>inscription gratuite</p></div></div></div>`,
+`<div class="eb">UN PEU D'HISTOIRE</div><h2>Une aventure née dans le réseau AEFE</h2><div class="c3"><div class="bx"><h3>2017</h3><p>Premier événement au Lycée français de Taipei.</p></div><div class="bx"><h3>Déploiement</h3><p>Taipei 2019, San Francisco 2021… puis des centaines d'établissements.</p></div><div class="bx"><h3>Aujourd'hui</h3><p>Soutenue par l'AEIF, la DNE et le ministère ; ressources sur la Forge des communs numériques éducatifs.</p></div></div><p style="margin-top:2.5cqw">Pas forcément la nuit : matin, après-midi, soirée, semaine ou week-end, chaque établissement choisit.</p>`,
+`<div class="eb">6 CATÉGORIES</div><h2>Deux langages</h2><div class="cols" style="align-items:start"><div class="bx" style="border-color:#ffab19"><h3 style="color:#ffab19;font-size:2.8cqw">🐱 Scratch</h3><p style="font-size:2cqw">CM1 → 6e (durée réduite)<br>5e → 3e<br>Lycée</p></div><div class="bx" style="border-color:var(--cyan)"><h3 style="color:var(--cyan);font-size:2.8cqw">🐍 Python + Pyxel</h3><p style="font-size:2cqw">NSI Première<br>NSI Terminale<br>Post-bac</p></div></div><p style="margin-top:2.5cqw">Notre parcours de préparation : <b style="color:var(--ink)">Scratch</b>, du cycle 3 au cycle 4.</p>`,
+`<div class="eb">LE GAME PACK</div><div class="cols"><div><h2>L'univers de jeu</h2><ul><li>Tous les lutins, sons et arrière-plans du jeu</li><li>Reçu ~36 h avant, découvert au lancement</li><li><b style="color:var(--pink)">Rien d'extérieur</b> : ni bibliothèque Scratch, ni internet</li><li>On peut dupliquer, retoucher légèrement, créer des lutins capteurs ou texte</li><li>On ne doit pas tout utiliser : faire des choix !</li></ul></div><img src="img/gp1-scene.jpg" alt=""></div>`,
+`<div class="eb">RÈGLES D'OR</div><h2>Ce qui est permis… ou pas</h2><div class="cols" style="align-items:start"><div class="bx"><h3 style="color:var(--green)">✓ Autorisé</h3><p>Demander conseil aux enseignants (pas de code complet)<br>S'entraider entre équipes<br>Utiliser la documentation fournie</p></div><div class="bx"><h3 style="color:var(--pink)">✕ Interdit</h3><p>Copier du code d'autres projets ou d'internet<br>Utiliser une IA ou chercher en ligne<br>Notes personnelles<br>Partager le jeu en ligne pendant la NDC</p></div></div>`,
+`<div class="eb">ÉVALUATION</div><h2>4 critères, notés sur 5</h2><div class="c4"><div class="bx"><div class="big">/5</div><h3>Jouabilité</h3><p>Un jeu qui ne fonctionne pas n'est pas évalué.</p></div><div class="bx"><div class="big">/5</div><h3>Richesse</h3><p>Richesse et complexité.</p></div><div class="bx"><div class="big">/5</div><h3>Originalité</h3><p>Originalité et créativité.</p></div><div class="bx"><div class="big">/5</div><h3>Consignes</h3><p>Respect des consignes, présentation, mode d'emploi.</p></div></div>`,
+`<div class="eb">CALENDRIER 2026-2027</div><h2>Les grandes dates</h2><div class="c4"><div class="bx"><h3 style="color:var(--green)">Sept. → avril</h3><p>Inscriptions sur nuitducode.net</p></div><div class="bx"><h3 style="color:var(--yellow)">Janv. → mai</h3><p>Préparation et entraînements</p></div><div class="bx"><h3 style="color:var(--pink)">2 → 28 mai</h3><p>La Nuit du Code dans chaque établissement</p></div><div class="bx"><h3 style="color:var(--violet)">Mi-juin</h3><p>Sélection internationale : 8 jeux par catégorie</p></div></div>`,
+`<div class="eb">NOTRE PARCOURS</div><h2>Objectif Coding : 3 niveaux + bonus</h2><div class="c4"><div class="bx" ${lv('deb')}><h3 style="color:var(--c)">Débutant</h3><p>#0 · #1 · passerelle · #2<br>Tracer, répéter, créer ses blocs</p></div><div class="bx" ${lv('int')}><h3 style="color:var(--c)">Intermédiaire</h3><p>#3 → #7<br>Interactions, variables, clones, premiers jeux</p></div><div class="bx" ${lv('exp')}><h3 style="color:var(--c)">Expert</h3><p>#7 · #8 · #9<br>Game packs en conditions réelles</p></div><div class="bx" ${lv('bonus')}><h3 style="color:var(--c)">Bonus</h3><p>Piggy ×2 + 2 univers cycle 3</p></div></div><p style="margin-top:2.4cqw">+ 18 tutos vidéo à utiliser tout au long du parcours.</p>`,
+`<div class="eb">NIVEAU DÉBUTANT</div><h2>Apprendre à commander le lutin</h2><div class="c4">${S.filter(s=>s.level==='deb').map(s=>`<div class="bx"><img src="${s.img}" style="height:13cqw;width:100%;object-fit:cover;object-position:top;background:#fff;margin-bottom:1cqw"><h3>${esc(s.num)} ${esc(s.title.replace(' (séquence passerelle)',''))}</h3><p>${esc(s.notions.slice(0,3).join(' · '))}</p></div>`).join('')}</div>`,
+`<div class="eb">NIVEAU INTERMÉDIAIRE</div><h2>Programmer ses premiers jeux</h2><div style="display:grid;grid-template-columns:repeat(5,1fr);gap:1.4cqw">${S.filter(s=>s.level==='int').map(s=>`<div class="bx"><img src="${s.img}" style="height:12cqw;width:100%;object-fit:cover;object-position:top;background:#fff;margin-bottom:1cqw"><h3 style="font-size:1.8cqw">${esc(s.num)} ${esc(s.title)}</h3><p style="font-size:1.35cqw">${esc(s.notions.slice(0,3).join(' · '))}</p></div>`).join('')}</div>`,
+`<div class="eb">NIVEAU EXPERT</div><h2>Les game packs en conditions réelles</h2><div class="c3">${S.filter(s=>s.level==='exp').map(s=>`<div class="bx"><img src="${s.scene}" style="margin-bottom:1cqw"><h3>${esc(s.num)} — ${esc(s.title)}</h3><p>${esc(s.notions.slice(0,3).join(' · '))}</p></div>`).join('')}</div>`,
+`<div class="eb">LA DÉMARCHE DE PROJET</div><h2>Comme le jour J</h2><div class="c4"><div class="bx"><div class="big">1</div><h3>Idées</h3><p>Croquis, carte mentale, storyboard ; trier les lutins.</p></div><div class="bx"><div class="big">2</div><h3>Planning</h3><p>Répartir et planifier les tâches.</p></div><div class="bx"><div class="big">3</div><h3>Règle</h3><p>Nommer le jeu, écrire sa règle.</p></div><div class="bx"><div class="big">4</div><h3>Coder</h3><p>Version jouable d'abord, puis améliorations.</p></div></div>`,
+`<div class="eb">BONUS</div><h2>Pour aller plus loin</h2><div class="c4">${S.filter(s=>s.level==='bonus').map(s=>`<div class="bx"><img src="${s.scene}" style="margin-bottom:1cqw"><h3 style="font-size:1.8cqw">${esc(s.title.replace('Cycle 3 – ','Cycle 3 · '))}</h3><p style="font-size:1.4cqw">${esc(s.notions.slice(0,3).join(' · '))}</p></div>`).join('')}</div>`,
+`<div class="eb">18 TUTOS VIDÉO</div><h2>Se débloquer en autonomie</h2><div style="columns:2;column-gap:3cqw">${TUTOS.map(t=>`<p style="margin:.35cqw 0;font-size:1.55cqw"><b style="color:var(--pink)">${String(t[0]).padStart(2,'0')}</b> ${esc(t[1])}</p>`).join('')}</div>`,
+`<div class="eb">ORGANISER</div><h2>Ce qu'il faut pour se lancer</h2><div class="c3"><div class="bx"><h3>🖥️ Matériel</h3><p>1 ordinateur par équipe, connexion internet, casques, souris.</p></div><div class="bx"><h3>🧑‍🏫 Encadrement</h3><p>Pas besoin de savoir coder ; présence au début, au repas, à la fin.</p></div><div class="bx"><h3>🍕 Logistique</h3><p>Salles, pauses, boissons, diplômes ; budget de 0 à quelques dizaines d'euros.</p></div></div>`,
+`<div class="eb">CONSEILS AUX ÉQUIPES</div><h2>Les 5 réflexes</h2><div class="c3" style="grid-template-columns:repeat(5,1fr)"><div class="bx"><h3>💭</h3><p>Penser le jeu avant de coder</p></div><div class="bx"><h3>🧱</h3><p>Simple et jouable d'abord</p></div><div class="bx"><h3>⌨️</h3><p>Les flèches plutôt que les lettres</p></div><div class="bx"><h3>💾</h3><p>Sauvegarder v1, v2, v3…</p></div><div class="bx"><h3>🥤</h3><p>Faire des pauses, boire, manger</p></div></div>`,
+`<div class="cols"><div><div class="eb">À VOUS DE JOUER</div><h1 style="font-size:6.5cqw">1, 2, 3…<br><span style="color:var(--green)">c0dez !</span></h1><p>Cette compétition est avant tout une fête.<br>Contact : Fehmi Klabi · fehmi.klabi@aefe.fr</p><p style="font-size:1.6cqw;color:var(--dim)">nuitducode.net · nuitducode.forge.apps.education.fr</p></div><img src="img/gp7-scene.jpg" alt=""></div>`
+];
+const deck=$('#deck'); let cur=0;
+deck.innerHTML=SL.map((h,i)=>`<div class="slide">${h}<span class="pg">${i+1}/${SL.length}</span></div>`).join('')+'<button class="nb prev" aria-label="Précédent">‹</button><button class="nb next" aria-label="Suivant">›</button>';
+$('#dots').innerHTML=SL.map((_,i)=>`<button data-i="${i}" aria-label="Diapo ${i+1}"></button>`).join('');
+function go(i){cur=Math.max(0,Math.min(SL.length-1,i));$$('.slide').forEach((s,j)=>s.classList.toggle('on',j===cur));$$('#dots button').forEach((b,j)=>b.classList.toggle('on',j===cur))}
+$$('#dots button').forEach(b=>b.onclick=()=>go(+b.dataset.i));
+$('#dprev').onclick=deck.querySelector('.prev').onclick=()=>go(cur-1);
+$('#dnext').onclick=deck.querySelector('.next').onclick=()=>go(cur+1);
+$('#dfs').onclick=()=>{try{(deck.requestFullscreen?deck.requestFullscreen():null)?.catch?.(()=>{})}catch(e){}};
+addEventListener('keydown',e=>{if(!$('#v-diaporama').classList.contains('on'))return;if(['ArrowRight',' ','PageDown'].includes(e.key)){e.preventDefault();go(cur+1)}if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(cur-1)}if(e.key==='f'||e.key==='F')$('#dfs').click()});
+go(0);
+
+/* router */
+const VIEWS=['accueil','la-nuit-du-code','regles','parcours','game-packs','tutos','ressources','organiser','diaporama'];
+function route(){
+  const h=(location.hash||'#accueil').slice(1);
+  $$('.view').forEach(v=>v.classList.remove('on'));
+  const s=S.find(x=>x.id===h);
+  let nav=h;
+  if(s){detail(s);$('#v-detail').classList.add('on');nav='parcours'}
+  else if(VIEWS.includes(h)) $('#v-'+h).classList.add('on');
+  else {$('#v-accueil').classList.add('on');nav='accueil'}
+  $$('.links a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+nav));
+  $('#links').classList.remove('open');
+  scrollTo(0,0);
+}
+addEventListener('hashchange',route);route();
+$('#burger').onclick=()=>$('#links').classList.toggle('open');
+</script>
+</body>
+</html>
