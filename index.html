@@ -187,6 +187,13 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);color:var(--
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--card2);border:1px solid var(--line);color:var(--ink);padding:12px 18px;border-radius:12px;z-index:50;font-weight:600;display:none;max-width:90vw}
 .res td .btn{padding:8px 12px;font-size:14px}
 
+/* logos partenaires */
+.logos{display:flex;gap:18px;flex-wrap:wrap;align-items:center;justify-content:center}
+.logos .lg{background:#fff;border-radius:14px;padding:12px 18px;height:96px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px -14px #000}
+.logos .lg img{max-height:72px;max-width:200px;display:block}
+.logos.sm .lg{height:64px;padding:8px 12px}.logos.sm .lg img{max-height:48px;max-width:140px}
+.navlogo{height:30px;background:#fff;border-radius:6px;padding:3px 5px;margin-left:6px}
+
 @media (max-width:980px){
   .hero,.dhead{grid-template-columns:1fr}.dhead .pdf{max-width:300px}
   .g3,.g4,.levels,.crit,.counter{grid-template-columns:1fr 1fr}
@@ -257,6 +264,15 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);color:var(--
     </div>
   </div>
 
+
+  <section style="padding-top:10px">
+    <span class="eyebrow" style="text-align:center;display:block">UN PROJET DU RÉSEAU AEFE</span>
+    <div class="logos">
+      <div class="lg"><img src="img/logo-aefe.png" alt="AEFE – Agence pour l'enseignement français à l'étranger" onerror="this.parentNode.remove()"></div>
+      <div class="lg"><img src="img/logo-zese.png" alt="Zone AEFE Europe du Sud-Est (ZESE)" onerror="this.parentNode.remove()"></div>
+      <div class="lg"><img src="img/logo-zeco.png" alt="Zone AEFE Europe centrale et orientale (ZECO)" onerror="this.parentNode.remove()"></div>
+    </div>
+  </section>
   <section>
     <span class="eyebrow">LE SITE EN BREF</span>
     <div class="grid g4">
@@ -583,6 +599,12 @@ footer{position:relative;z-index:1;border-top:1px solid var(--line);color:var(--
 </main>
 <div class="toast" id="toast"></div>
 <footer>
+  <div class="logos sm">
+      <div class="lg"><img src="img/logo-aefe.png" alt="AEFE – Agence pour l'enseignement français à l'étranger" onerror="this.parentNode.remove()"></div>
+      <div class="lg"><img src="img/logo-zese.png" alt="Zone AEFE Europe du Sud-Est (ZESE)" onerror="this.parentNode.remove()"></div>
+      <div class="lg"><img src="img/logo-zeco.png" alt="Zone AEFE Europe centrale et orientale (ZECO)" onerror="this.parentNode.remove()"></div>
+    </div>
+  <div style="height:14px"></div>
   Objectif Nuit du C0de · Parcours de préparation Scratch — Fehmi Klabi, EF2D Technologie (AEFE) · Fiches « Objectif Coding » Zone Proche-Orient.<br>
   Informations officielles : <a href="https://nuitducode.forge.apps.education.fr/" target="_blank" rel="noopener">nuitducode.forge.apps.education.fr</a> (CC BY-SA 4.0) · Contact : fehmi.klabi@aefe.fr
 </footer>
