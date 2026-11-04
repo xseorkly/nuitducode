@@ -1,0 +1,13 @@
+# Publication du site sur GitLab Pages (La Forge des communs numériques éducatifs)
+pages:
+  stage: deploy
+  image: alpine:latest
+  script:
+    - mkdir .public
+    - cp -r index.html data.js img pages files README.md .public/
+    - mv .public public
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
